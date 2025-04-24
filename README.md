@@ -1,43 +1,61 @@
+# Multi-Environment Ticket Management Application – Docker Deployment
 
-# Ticket Management Application – Multi-Environment Deployment with Docker
+This project is a multi-environment ticket management system consisting of:
 
-This project is a **multi-environment ticket management system** composed of:
+- A **Flask development backend**
+- A **Flask production backend**
+- A **React frontend**
+- A **MongoDB**
 
--  A Flask **development backend**
--  A Flask **production backend**
--  A React **frontend**
-- A **MongoDB** database
-
-The application is containerized using **Docker** and deployed using **Docker Compose**, supporting clean separation between development and production backends.
-
----
+The entire application is containerized using **Docker** and orchestrated using **Docker Compose** to run seamlessly in isolated environments on your local machine.
 
 ---
 
-## Prerequisites
+## Task Overview
 
-Before you begin, ensure you have the following installed:
+This project includes the following:
 
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+1. **Docker Configuration**
+   - Dockerfiles for:
+     - Development backend
+     - Production backend
+     - React frontend
+   - Docker Compose configuration
+   - Proper environment variable integration using `.env` files
+
+2. **Application Deployment**
+   - Install and use Docker & Docker Compose
+   - Deploy all services using a single command
+   - Ensure inter-service communication (Frontend ⇄ Backend ⇄ MongoDB)
 
 ---
-## Environment Configuration
 
-Create the following `.env` files in the root directory:
+## Docker Configuration
 
-### `.env.dev`
-```env
+Each service has its own `Dockerfile`:
+
+### Backend Development Dockerfile
+```dockerfile
+FROM python:3.10
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 3001
+CMD ["python", "app.py"]
+
+
+### 📦 Frontend Development Dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+EXPOSE 3002
+CMD ["python", "app.py"]
+
+### Environment Configuration
+
 MONGO_URI=mongodb://mongo:27017/devdb
 REACT_APP_API_URL=http://localhost:5001
-
-
-
-
-  
-
-
-
----
-
 
